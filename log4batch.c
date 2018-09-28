@@ -34,7 +34,7 @@ int main (int argc, char *argv[])
         switch (opt)
         {
         case 'd':
-            if ( strcmp(argv[3] , debug ) ) {
+            if ( strcmp(argv[3] , debug ) == 0) {
                 printf ("DAS IST EINE DEBUG MESSAGE \n");
             }
             printf ("[%s]\t", optarg);
@@ -48,19 +48,25 @@ int main (int argc, char *argv[])
                 //}
             }
             printf ("\n");
-            break;
+            return 0;
+            //break;
         case 'h':
             printf ("Usage:\n");
             printf (" log4batch -d INFO|ERROR|WARN|DEBUG message text\n");
-            break;
+            return 0;
+            //break;
         }    
     } //while
+    for(i=1; i < argc; i++) {
+        printf("%s ", argv[i]);
+    }
+    /*******
     today();
     for(i=1; i < argc; i++) {
         printf(" %s", argv[i]);
     }
+    ********/
     printf ("\n");
-    //break;
     return 0;
 } //main
 
