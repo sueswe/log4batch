@@ -1,0 +1,44 @@
+#!/usr/bin/env ruby
+
+require 'logger'
+require 'colorize'
+logger = Logger.new(STDOUT)
+#logger.level = Logger.WARN
+
+$stdout.sync = true
+$stdin.sync = true
+
+logger.formatter = proc do |severity, datetime, progname, msg|
+    date_format = datetime.strftime("%Y-%m-%d %H:%M:%S").cyan + " "
+    "#{severity.ljust(5)} [#{date_format}]: #{msg}\n"
+end
+
+
+task :default => [ :compile , :install ]
+
+os = RbConfig::CONFIG["host_os"]
+homeDir = ENV["HOME"]
+binDir = ENV["HOME"] + "/bin/"
+home = homeDir
+
+puts "You are runnig on " + os.yellow
+puts "HOME is " + homeDir.yellow
+
+################################################################################
+
+desc "compile".green
+task :compile do
+  sh("gcc log4batch.c -o log4batch")
+end
+
+
+desc "install to HOME/bin/"
+task :install do
+  puts ""
+  logger.info "installing log4batch".green
+  mkdir(binDir) unless File.exist?(binDir)
+  cp("log4batch", binDir + "log4batch")
+  sh("chmod a+x " + binDir + "log4batch")
+end
+
+
